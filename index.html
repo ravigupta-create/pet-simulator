@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paw Palace - Pet Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- INTRO / NAME SCREEN -->
+    <div id="intro-screen">
+        <div class="intro-content">
+            <h1>Paw Palace</h1>
+            <p class="subtitle">Your Virtual Pet Companion</p>
+            <div class="breed-select">
+                <h3>Choose Your Breed</h3>
+                <div id="breed-grid" class="breed-grid"></div>
+            </div>
+            <div class="name-input">
+                <label for="dog-name">Name Your Dog</label>
+                <input type="text" id="dog-name" placeholder="Enter a name..." maxlength="16" autocomplete="off">
+            </div>
+            <button id="start-btn" class="btn-primary">Adopt & Play!</button>
+        </div>
+    </div>
+
+    <!-- MAIN GAME -->
+    <div id="game-screen" class="hidden">
+        <!-- TOP BAR -->
+        <header id="top-bar">
+            <div class="dog-info">
+                <span id="dog-name-display">Buddy</span>
+                <span id="dog-breed-display" class="breed-tag">Golden Retriever</span>
+                <span id="dog-level-display" class="level-tag">Lv 1</span>
+            </div>
+            <div class="currency">
+                <span class="coin-icon">&#x1FA99;</span>
+                <span id="coins-display">0</span>
+            </div>
+            <div class="xp-bar-wrap">
+                <div id="xp-bar" class="xp-bar" style="width:0%"></div>
+            </div>
+        </header>
+
+        <!-- MAIN CANVAS AREA -->
+        <div id="canvas-area">
+            <canvas id="dog-canvas" width="500" height="420"></canvas>
+            <div id="reaction-bubble" class="reaction-bubble hidden"></div>
+            <div id="click-particles"></div>
+        </div>
+
+        <!-- STAT BARS -->
+        <div id="stat-bars">
+            <div class="stat"><span class="stat-label">Hunger</span><div class="stat-track"><div id="bar-hunger" class="stat-fill hunger" style="width:80%"></div></div></div>
+            <div class="stat"><span class="stat-label">Happiness</span><div class="stat-track"><div id="bar-happiness" class="stat-fill happiness" style="width:80%"></div></div></div>
+            <div class="stat"><span class="stat-label">Energy</span><div class="stat-track"><div id="bar-energy" class="stat-fill energy" style="width:80%"></div></div></div>
+            <div class="stat"><span class="stat-label">Hygiene</span><div class="stat-track"><div id="bar-hygiene" class="stat-fill hygiene" style="width:80%"></div></div></div>
+            <div class="stat"><span class="stat-label">Health</span><div class="stat-track"><div id="bar-health" class="stat-fill health" style="width:80%"></div></div></div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <nav id="action-bar">
+            <button class="action-btn" data-action="pet" title="Pet">&#x1F90D;</button>
+            <button class="action-btn" data-action="feed" title="Feed">&#x1F356;</button>
+            <button class="action-btn" data-action="play" title="Play">&#x1F3BE;</button>
+            <button class="action-btn" data-action="walk" title="Walk">&#x1F6B6;</button>
+            <button class="action-btn" data-action="groom" title="Groom">&#x1F6C1;</button>
+            <button class="action-btn" data-action="tricks" title="Tricks">&#x2B50;</button>
+            <button class="action-btn" data-action="sleep" title="Sleep">&#x1F634;</button>
+            <button class="action-btn" data-action="vet" title="Vet">&#x1FA7A;</button>
+        </nav>
+
+        <!-- BOTTOM TABS -->
+        <div id="tab-bar">
+            <button class="tab-btn active" data-tab="interact">Interact</button>
+            <button class="tab-btn" data-tab="shop">Shop</button>
+            <button class="tab-btn" data-tab="wardrobe">Wardrobe</button>
+            <button class="tab-btn" data-tab="minigames">Games</button>
+            <button class="tab-btn" data-tab="walks">Explore</button>
+            <button class="tab-btn" data-tab="achievements">Awards</button>
+            <button class="tab-btn" data-tab="stats">Stats</button>
+            <button class="tab-btn" data-tab="settings">&#x2699;</button>
+        </div>
+
+        <!-- TAB PANELS -->
+        <div id="panels">
+            <!-- INTERACT (default) -->
+            <div id="panel-interact" class="panel active">
+                <div id="interact-log" class="log-area"></div>
+            </div>
+
+            <!-- SHOP -->
+            <div id="panel-shop" class="panel">
+                <h3>Pet Shop</h3>
+                <div class="shop-categories">
+                    <button class="shop-cat active" data-cat="accessories">Accessories</button>
+                    <button class="shop-cat" data-cat="food">Food</button>
+                    <button class="shop-cat" data-cat="toys">Toys</button>
+                    <button class="shop-cat" data-cat="rooms">Rooms</button>
+                </div>
+                <div id="shop-items" class="shop-grid"></div>
+            </div>
+
+            <!-- WARDROBE -->
+            <div id="panel-wardrobe" class="panel">
+                <h3>Wardrobe</h3>
+                <div id="wardrobe-items" class="wardrobe-grid"></div>
+                <p class="hint">Tap an item to equip/unequip</p>
+            </div>
+
+            <!-- MINI-GAMES -->
+            <div id="panel-minigames" class="panel">
+                <h3>Mini-Games</h3>
+                <div class="minigame-list">
+                    <button class="minigame-btn" data-game="fetch">&#x1F3BE; Fetch</button>
+                    <button class="minigame-btn" data-game="agility">&#x1F3C5; Agility Course</button>
+                    <button class="minigame-btn" data-game="treat-catch">&#x1F96A; Treat Catch</button>
+                    <button class="minigame-btn" data-game="memory">&#x1F9E0; Memory Match</button>
+                    <button class="minigame-btn" data-game="tug">&#x1FA78; Tug of War</button>
+                </div>
+                <div id="minigame-area" class="hidden">
+                    <canvas id="minigame-canvas" width="500" height="300"></canvas>
+                    <button id="minigame-close" class="btn-secondary">Back</button>
+                </div>
+            </div>
+
+            <!-- WALKS / EXPLORE -->
+            <div id="panel-walks" class="panel">
+                <h3>Go For a Walk</h3>
+                <div id="walk-locations" class="walk-grid"></div>
+                <div id="walk-scene" class="hidden">
+                    <canvas id="walk-canvas" width="500" height="250"></canvas>
+                    <div id="walk-events"></div>
+                    <button id="walk-home" class="btn-secondary">Go Home</button>
+                </div>
+            </div>
+
+            <!-- ACHIEVEMENTS -->
+            <div id="panel-achievements" class="panel">
+                <h3>Achievements</h3>
+                <div id="achievement-list" class="achievement-grid"></div>
+            </div>
+
+            <!-- STATS -->
+            <div id="panel-stats" class="panel">
+                <h3>Stats Dashboard</h3>
+                <div id="stats-content" class="stats-grid"></div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div id="panel-settings" class="panel">
+                <h3>Settings</h3>
+                <div class="setting-row"><label>Music</label><input type="range" id="music-vol" min="0" max="100" value="30"></div>
+                <div class="setting-row"><label>SFX</label><input type="range" id="sfx-vol" min="0" max="100" value="70"></div>
+                <div class="setting-row"><label>Theme</label>
+                    <select id="theme-select">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="pastel">Pastel</option>
+                    </select>
+                </div>
+                <button id="save-btn" class="btn-secondary">Save Game</button>
+                <button id="reset-btn" class="btn-danger">Reset Game</button>
+            </div>
+        </div>
+
+        <!-- MODAL OVERLAY -->
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <h3 id="modal-title"></h3>
+                <div id="modal-body"></div>
+                <button id="modal-close" class="btn-secondary">OK</button>
+            </div>
+        </div>
+
+        <!-- TRICKS PANEL OVERLAY -->
+        <div id="tricks-panel" class="modal hidden">
+            <div class="modal-content">
+                <h3>Tricks</h3>
+                <div id="tricks-list"></div>
+                <button class="btn-secondary" onclick="document.getElementById('tricks-panel').classList.add('hidden')">Close</button>
+            </div>
+        </div>
+
+        <!-- FEED MENU -->
+        <div id="feed-menu" class="modal hidden">
+            <div class="modal-content">
+                <h3>Feed <span id="feed-dog-name"></span></h3>
+                <div id="food-list" class="food-grid"></div>
+                <button class="btn-secondary" onclick="document.getElementById('feed-menu').classList.add('hidden')">Close</button>
+            </div>
+        </div>
+
+        <!-- DAILY REWARD -->
+        <div id="daily-reward" class="modal hidden">
+            <div class="modal-content">
+                <h3>Daily Reward!</h3>
+                <p id="daily-reward-text"></p>
+                <button class="btn-primary" id="claim-daily">Claim!</button>
+            </div>
+        </div>
+
+        <!-- PHOTO MODE -->
+        <div id="photo-overlay" class="hidden">
+            <div class="photo-controls">
+                <select id="photo-filter">
+                    <option value="none">No Filter</option>
+                    <option value="sepia">Sepia</option>
+                    <option value="grayscale">B&W</option>
+                    <option value="warm">Warm</option>
+                    <option value="cool">Cool</option>
+                    <option value="vintage">Vintage</option>
+                </select>
+                <button id="photo-snap" class="btn-primary">&#x1F4F8; Snap!</button>
+                <button id="photo-exit" class="btn-secondary">Exit</button>
+            </div>
+        </div>
+        <button id="photo-btn" class="photo-mode-btn" title="Photo Mode">&#x1F4F7;</button>
+
+        <!-- JUKEBOX -->
+        <button id="music-toggle" class="music-btn" title="Music">&#x1F3B5;</button>
+
+        <!-- TOAST -->
+        <div id="toast" class="toast hidden"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
