@@ -464,7 +464,23 @@ c.strokeStyle=b.body;c.lineWidth=3*s;c.lineCap='round';c.beginPath();c.moveTo(cx
 }
 
 // ═══ START ═══
-function startGame(){S.name=$('dog-name').value.trim()||'Buddy';$('intro-screen').classList.add('hidden');$('game-screen').classList.remove('hidden');resize();updateHUD();checkDaily();generateQuests();requestAnimationFrame(loop);setInterval(tickStats,5000);setInterval(()=>{S.playtime++;autoSave()},60000);setInterval(tickWeather,30000);setInterval(tickNPC,20000);setInterval(tickGarden,10000);toast('WASD to move, E to interact, Tab to switch, Shift to sprint!')}
+function applyCheat(){
+S.coins=99999;S.coinsTotal=99999;S.level=20;S.xp=0;
+S.hunger=100;S.happy=100;S.energy=100;S.hygiene=100;S.health=100;
+S.maxHappy=true;
+S.ownedAcc=ACCESSORIES.map(a=>a.id);S.ownedToys=TOYS.map(t=>t.id);
+S.tricksLearned=TRICKS.map(t=>t.id);
+S.hasCat=true;S.catRoom='living';S.catX=430;S.catY=420;
+S.visitedRooms=[...ROOM_ORDER];
+S.foodsTried=FOODS.map(f=>f.id);
+S.collectibles=COLLECTIBLES.map(c=>c.id);S.collectFound=COLLECTIBLES.length;
+S.weatherSeen=[...WEATHERS];
+}
+function startGame(){
+S.name=$('dog-name').value.trim()||'Buddy';
+const cheat=($('cheat-code')?.value||'').trim().toLowerCase();
+if(cheat==='srg2')applyCheat();
+$('intro-screen').classList.add('hidden');$('game-screen').classList.remove('hidden');resize();updateHUD();checkDaily();generateQuests();requestAnimationFrame(loop);setInterval(tickStats,5000);setInterval(()=>{S.playtime++;autoSave()},60000);setInterval(tickWeather,30000);setInterval(tickNPC,20000);setInterval(tickGarden,10000);toast('WASD to move, E to interact, Tab to switch, Shift to sprint!')}
 
 // ═══ INPUT ═══
 const keys={};
